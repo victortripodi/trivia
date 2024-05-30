@@ -2,32 +2,32 @@ import React from 'react';
 
 const CategoriesButtons = ({onClick}) => {
   const handleGeneralKnowledgeClick = () => {
-    onClick('GenealKnowLedge')
+    onClick(9) //id of the category
     console.log('General Knowledge button clicked');
   };
 
   const handleBooksClick = () => {
-    onClick('Books')
+    onClick(10)
     console.log('Books button clicked');
   };
 
   const handleFilmsClick = () => {
-    onClick('Films')
+    onClick(11)
     console.log('Film button clicked');
   };
 
   const handleVideoGamesClick = () => {
-    onClick('Video Games')
+    onClick(15)
     console.log('Video Games button clicked');
   };
 
   const handleGeographyClick = () => {
-    onClick('Geography')
+    onClick(22)
     console.log('Geography button clicked');
   };
 
   const handleHistoryClick = () => {
-    onClick('History')
+    onClick(23)
     console.log('History button clicked');
   };
 

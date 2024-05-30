@@ -3,17 +3,17 @@ import React from 'react';
 
 const LevelButtons = ({onClick}) => {
   const handleEasyLevelClick = () => {
-    onClick('Easy')
+    onClick('easy')
     console.log('Easy Level button clicked');
   };
 
   const handleMediumLevelClick = () => {
-    onClick('Medium')
+    onClick('medium')
     console.log('Medium Level button clicked');
   };
 
   const handleHardLevelClick = () => {
-    onClick('Hard')
+    onClick('hard')
     console.log('Hard Level button clicked');
   };
 
