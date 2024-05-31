@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-const Questions = ({ level, category }) => {
+
+const API_URL = "https://opentdb.com/api.php"
+const QUESTIONS_AMOUNT = 10
+
+const Questions = ({ level, category, onRestart }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState([]);
-  const [questions, setQuestions] = useState([]);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [questions, setQuestions] = useState([]); // questions from API 
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answerSubmitted, setAnswerSubmitted] = useState(false);
-  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null); // selected answer by user
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0); // points
 
+  const answerSubmitted = selectedAnswer != null
+  const currentQuestion = questions.length ? questions[currentQuestionIndex] : null
 
-//Fetch data from API opentdb 
+  console.log("currentQuestion", { currentQuestion, questions, currentQuestionIndex })
+  //Fetch data from API opentdb 
   const fetchTrivia = async () => {
     try {
-      const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${level}`);
+      const response = await fetch(`${API_URL}?amount=${QUESTIONS_AMOUNT}&category=${category}&difficulty=${level}`);
       const data = await response.json();
+      setIsLoading(false)
       setQuestions(data.results);
     } catch (error) {
       console.error('Error fetching questions:', error);
@@ -22,34 +31,34 @@ const Questions = ({ level, category }) => {
   };
 
   useEffect(() => {
+    // on mount fetch trivia questions
     fetchTrivia();
   }, []);
 
 
-//Event Handler Functions
-  const handleAnswerClick = (answer) => {
+  //Event Handler Functions
+  const handleAnswerClick = useCallback((answer) => {
     setSelectedAnswer(answer);
-    setAnswerSubmitted(true);
-    if (answer === questions[currentQuestionIndex].correct_answer) {
+
+    if (answer === currentQuestion.correct_answer) {
       setCorrectAnswersCount(correctAnswersCount + 1);
     }
-  };
+  }, [currentQuestion, currentQuestionIndex, correctAnswersCount]);
 
-  const handleNextClick = (answer) => {
+  const handleNextClick = useCallback(() => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
     setSelectedAnswer(null);
-    setAnswerSubmitted(false);
-  };
-  
+
+  }, [currentQuestionIndex]);
 
 
-//Questions
+  // Question
   const question = () => {
-    if (questions.length > 0 && currentQuestionIndex < questions.length) {
-      const currentQuestion = questions[currentQuestionIndex];
+    if (questions.length > 0) {
+      const currentQuestionFixed = currentQuestion.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')
       return (
         <div>
-          <h2>{currentQuestion.question}</h2>
+          <h2>{currentQuestionFixed}</h2>
           {currentQuestion.incorrect_answers.map((options, index) => (
             <button onClick={() => handleAnswerClick(options)} key={options + "-" + index}>{options}</button>
           ))}
@@ -61,10 +70,9 @@ const Questions = ({ level, category }) => {
     }
   };
 
-//Answers
-  const answers = () => {
-    if (answerSubmitted && questions.length > 0 && currentQuestionIndex < questions.length) {
-      const currentQuestion = questions[currentQuestionIndex];
+  // Result
+  const result = () => {
+    if (answerSubmitted && questions.length > 0) {
       if (selectedAnswer === currentQuestion.correct_answer) {
         return <p>"You did it"</p>;
       } else {
@@ -75,7 +83,7 @@ const Questions = ({ level, category }) => {
     }
   };
 
-//Results
+  // Final Results
   const message = () => {
     if (correctAnswersCount === 0) {
       return `Really? Your score was ${correctAnswersCount}. Please come back later.`;
@@ -88,18 +96,28 @@ const Questions = ({ level, category }) => {
     }
   };
 
+  const isPlaying = currentQuestionIndex < questions.length
 
-//Render
   return (
     <div>
-    <div>
-      {currentQuestionIndex < questions.length ? <h1>Questions</h1> : <h1>Results</h1>}
-      {currentQuestionIndex !== questions.length && <p>Question {currentQuestionIndex + 1+"/10"}</p>}
-      {question()}
-      {answers()}
-      {currentQuestionIndex !== questions.length && <button onClick={handleNextClick} disabled={!answerSubmitted}>Next</button>}
-      {currentQuestionIndex === questions.length && <p>{message()}</p>}
-    </div>
+      {isLoading ? <div>Loading...</div> :
+        <div>
+          {isPlaying ?
+            <div>
+              <h1>Questions</h1>
+              {currentQuestionIndex !== questions.length && <p>Question {currentQuestionIndex + 1 + `/${QUESTIONS_AMOUNT}`}</p>}
+              {question()}
+              {result()}
+              {currentQuestionIndex !== questions.length && <button onClick={handleNextClick} disabled={!answerSubmitted}>Next</button>}
+            </div> :
+            <div>
+              <h1>Results</h1>
+              {currentQuestionIndex === questions.length && <p>{message()}</p>}
+            </div>
+          }
+          <button onClick={onRestart}>Restart</button>
+        </div>
+      }
     </div>
   );
 };

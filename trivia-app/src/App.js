@@ -1,28 +1,38 @@
-import logo from './logo.svg';
+import { useCallback, useState } from 'react';
 import './App.css';
 import StartButtons from './components/StartButtons';
 import LevelButtons from './components/LevelButtons';
 import CategoriesButtons from './components/CategoriesButtons';
 import Questions from './components/Questions';
-import { useState } from 'react';
 
 function App() {
 
-  const [players, setPlayers]  = useState(null)
-  const [levels, setLevels]  = useState(null)
-  const [categories, setCategories]  = useState(null)
+  const [players, setPlayers] = useState(null)
+  const [level, setLevel] = useState(null)
+  const [category, setCategory] = useState(null)
 
+  // memo functions with useCallback
+  const onBackLevel = useCallback(() => {
+    setPlayers(null)
+  }, [])
+
+  const onBackCategories = useCallback(() => {
+    setLevel(null)
+  }, [])
+
+  const onRestart = useCallback(() => {
+    setPlayers(null)
+    setLevel(null)
+    setCategory(null)
+  }, [])
 
   return (
     <div className="App">
       <h1>Trivia Time</h1>
       {players === null && <StartButtons onClick={setPlayers} />}
-      {players !== null && levels === null && <LevelButtons onClick={setLevels} />}
-      {players !== null && levels !== null && <CategoriesButtons onClick={setCategories} />}
-      {players !== null && levels !== null && categories !== null && <Questions level={levels} category={categories} />}
-
-
-      
+      {players !== null && level === null && <LevelButtons onClick={setLevel} onBack={onBackLevel} />}
+      {players !== null && level !== null && category === null && <CategoriesButtons onClick={setCategory} onBack={onBackCategories} />}
+      {players !== null && level !== null && category !== null && <Questions level={level} category={category} onRestart={onRestart} />}
     </div>
   );
 }

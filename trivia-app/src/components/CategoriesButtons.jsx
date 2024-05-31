@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CategoriesButtons = ({onClick}) => {
+const CategoriesButtons = ({ onClick, onBack }) => {
   const handleGeneralKnowledgeClick = () => {
     onClick(9) //ID of the category
     console.log('General Knowledge button clicked');
@@ -33,6 +33,7 @@ const CategoriesButtons = ({onClick}) => {
 
   return (
     <div>
+      <button onClick={onBack}>Back</button>
       <h1>Select the category</h1>
       <button onClick={handleGeneralKnowledgeClick}>General Knowledge</button>
       <button onClick={handleBooksClick}>Books</button>

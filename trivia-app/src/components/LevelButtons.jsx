@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const LevelButtons = ({onClick}) => {
+const LevelButtons = ({ onClick, onBack }) => {
   const handleEasyLevelClick = () => {
     onClick('easy')
     console.log('Easy Level button clicked');
@@ -19,6 +19,7 @@ const LevelButtons = ({onClick}) => {
 
   return (
     <div>
+      <button onClick={onBack}>Back</button>
       <h1>How confident are you today? Select your challenge</h1>
       <button onClick={handleEasyLevelClick}>Easy</button>
       <button onClick={handleMediumLevelClick}>Medium</button>
