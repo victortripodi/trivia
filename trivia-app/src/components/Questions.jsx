@@ -4,6 +4,23 @@ import React, { useState, useEffect, useCallback } from 'react';
 const API_URL = "https://opentdb.com/api.php"
 const QUESTIONS_AMOUNT = 10
 
+
+const shuffle = (array) => {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
 const Questions = ({ level, category, onRestart }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState([]);
@@ -56,13 +73,26 @@ const Questions = ({ level, category, onRestart }) => {
   const question = () => {
     if (questions.length > 0) {
       const currentQuestionFixed = currentQuestion.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')
+
+      const answers = currentQuestion.incorrect_answers.map((option, index) => {
+        return {
+          text: option,
+          isCorrect : false
+        }
+      })
+      answers.push({
+        text: currentQuestion.correct_answer,
+        isCorrect : true
+      })
+
+      shuffle(answers)
+
       return (
         <div>
           <h2>{currentQuestionFixed}</h2>
-          {currentQuestion.incorrect_answers.map((options, index) => (
-            <button onClick={() => handleAnswerClick(options)} key={options + "-" + index}>{options}</button>
+          {answers.map((option, index) => (
+            <button onClick={() => handleAnswerClick(option)} key={option.text + "-" + index} style={option.isCorrect && answerSubmitted ? correctAnswerButtonStyle : {}}>{option.text}</button>
           ))}
-          <button onClick={() => handleAnswerClick(currentQuestion.correct_answer)}>{currentQuestion.correct_answer}</button>
         </div>
       );
     } else {
@@ -120,6 +150,11 @@ const Questions = ({ level, category, onRestart }) => {
       }
     </div>
   );
+};
+
+
+const correctAnswerButtonStyle = {
+  border: '5px solid green',
 };
 
 export default Questions;
