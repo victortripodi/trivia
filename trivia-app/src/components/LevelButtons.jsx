@@ -19,14 +19,21 @@ const LevelButtons = ({ onClick, onBack }) => {
 
   return (
     <div>
-      <button onClick={onBack}>Back</button>
-      <h1>How confident are you today? Select your challenge</h1>
-      <button onClick={handleEasyLevelClick}>Easy</button>
-      <button onClick={handleMediumLevelClick}>Medium</button>
-      <button onClick={handleHardLevelClick}>Hard</button>
+      <h2>How confident are you today? </h2>
+      <div>
+        <button onClick={handleEasyLevelClick}>EASY</button>
+        <button style={mediumButtonStyle} onClick={handleMediumLevelClick}>MEDIUM</button>
+        <button onClick={handleHardLevelClick}>HARD</button>
+      </div>
+      <button className='back-button' onClick={onBack}>{"< Back"}</button>
     </div>
   );
 };
 
+
+const mediumButtonStyle = {
+  marginLeft: '20px',
+  marginRight: '20px',
+}
 
 export default LevelButtons;

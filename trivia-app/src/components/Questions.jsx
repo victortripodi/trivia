@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 
 const API_URL = "https://opentdb.com/api.php"
@@ -33,7 +33,6 @@ const Questions = ({ level, category, onRestart }) => {
   const answerSubmitted = selectedAnswer != null
   const currentQuestion = questions.length ? questions[currentQuestionIndex] : null
 
-  console.log("currentQuestion", { currentQuestion, questions, currentQuestionIndex })
   //Fetch data from API opentdb 
   const fetchTrivia = async () => {
     try {
@@ -69,30 +68,40 @@ const Questions = ({ level, category, onRestart }) => {
   }, [currentQuestionIndex]);
 
 
+  const asnwers = useMemo(() => {
+    if (currentQuestion) {
+      const answersArray = currentQuestion.incorrect_answers.map((option, index) => {
+        return {
+          text: option.replace(/&quot;/g, '\"').replace(/&#039;/g, '\''),
+          isCorrect: false
+        }
+      })
+      answersArray.push({
+        text: currentQuestion.correct_answer,
+        isCorrect: true
+      })
+
+      shuffle(answersArray)
+      return answersArray
+    }
+    return []
+
+  }, [currentQuestion])
+
   // Question
   const question = () => {
     if (questions.length > 0) {
       const currentQuestionFixed = currentQuestion.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')
 
-      const answers = currentQuestion.incorrect_answers.map((option, index) => {
-        return {
-          text: option,
-          isCorrect : false
-        }
-      })
-      answers.push({
-        text: currentQuestion.correct_answer,
-        isCorrect : true
-      })
-
-      shuffle(answers)
-
       return (
-        <div>
-          <h2>{currentQuestionFixed}</h2>
-          {answers.map((option, index) => (
-            <button onClick={() => handleAnswerClick(option)} key={option.text + "-" + index} style={option.isCorrect && answerSubmitted ? correctAnswerButtonStyle : {}}>{option.text}</button>
-          ))}
+        <div style={{ padding: '30px' }}>
+          <h3>{currentQuestionFixed}</h3>
+          <div className='grid-container'>
+
+            {asnwers.map((option, index) => (
+              <button disabled={answerSubmitted} onClick={() => handleAnswerClick(option.text)} key={option.text + "-" + index} style={option.isCorrect && answerSubmitted ? correctAnswerButtonStyle : {}}>{option.text}</button>
+            ))}
+          </div>
         </div>
       );
     } else {
@@ -106,7 +115,7 @@ const Questions = ({ level, category, onRestart }) => {
       if (selectedAnswer === currentQuestion.correct_answer) {
         return <p>"You did it"</p>;
       } else {
-        return <p>"Unlucky"</p>;
+        return <p>Wrong! ☹️ the correct answer is: {currentQuestion.correct_answer} </p>;
       }
     } else {
       return null;
@@ -130,22 +139,23 @@ const Questions = ({ level, category, onRestart }) => {
 
   return (
     <div>
-      {isLoading ? <div>Loading...</div> :
+      {isLoading ? <div className='loading'>Loading...</div> :
         <div>
           {isPlaying ?
             <div>
-              <h1>Questions</h1>
-              {currentQuestionIndex !== questions.length && <p>Question {currentQuestionIndex + 1 + `/${QUESTIONS_AMOUNT}`}</p>}
+              <h2>Question {currentQuestionIndex + 1 + `/${QUESTIONS_AMOUNT}`}</h2>
               {question()}
               {result()}
-              {currentQuestionIndex !== questions.length && <button onClick={handleNextClick} disabled={!answerSubmitted}>Next</button>}
             </div> :
             <div>
-              <h1>Results</h1>
+              <h2>Results</h2>
               {currentQuestionIndex === questions.length && <p>{message()}</p>}
             </div>
           }
-          <button onClick={onRestart}>Restart</button>
+          <div>
+            {currentQuestionIndex !== questions.length && <button className='back-button' onClick={handleNextClick} disabled={!answerSubmitted}>Next</button>}
+            <button className='back-button' onClick={onRestart}>Restart</button>
+          </div>
         </div>
       }
     </div>

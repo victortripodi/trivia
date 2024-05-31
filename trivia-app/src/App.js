@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Trivia Time</h1>
+      <h1 style={{ color: 'white'}}>T R I V I A</h1>
       {players === null && <StartButtons onClick={setPlayers} />}
       {players !== null && level === null && <LevelButtons onClick={setLevel} onBack={onBackLevel} />}
       {players !== null && level !== null && category === null && <CategoriesButtons onClick={setCategory} onBack={onBackCategories} />}

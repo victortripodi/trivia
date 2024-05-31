@@ -14,9 +14,9 @@ const StartButtons = ({ onClick }) => {
   };
 
   return (
-    <div>
-      <button onClick={handleOnePlayerClick}>One Player</button>
-      <button onClick={handleTwoPlayersClick}>Two Players</button>
+    <div style={containerStyle}>
+      <button  style={firstBtnStyle} onClick={handleOnePlayerClick}><span className="text">ONE PLAYER</span></button>
+      <button  onClick={handleTwoPlayersClick}><span className="text">TWO PLAYERS</span></button>
       {showUnderConstruction && (
         <div>
           <h2>Site Under Construction</h2>
@@ -27,5 +27,17 @@ const StartButtons = ({ onClick }) => {
     </div>
   );
 };
+
+const containerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+}
+
+const firstBtnStyle = {
+  marginBottom: '30px',
+  marginTop: '30px'
+}
 
 export default StartButtons;

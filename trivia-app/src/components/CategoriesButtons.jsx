@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const CategoriesButtons = ({ onClick, onBack }) => {
   const handleGeneralKnowledgeClick = () => {
     onClick(9) //ID of the category
@@ -33,15 +34,16 @@ const CategoriesButtons = ({ onClick, onBack }) => {
 
   return (
     <div>
-      <button onClick={onBack}>Back</button>
-      <h1>Select the category</h1>
-      <button onClick={handleGeneralKnowledgeClick}>General Knowledge</button>
-      <button onClick={handleBooksClick}>Books</button>
-      <button onClick={handleFilmsClick}>Film</button>
-      <button onClick={handleVideoGamesClick}>Video Games</button>
-      <button onClick={handleGeographyClick}>Geography</button>
-      <button onClick={handleHistoryClick}>History</button>
-
+      <h2>Select the category</h2>
+      <div className='grid-container'>
+        <button className='grid-item' onClick={handleGeneralKnowledgeClick}>General Knowledge</button>
+        <button className='grid-item' onClick={handleBooksClick}>Books</button>
+        <button className='grid-item' onClick={handleFilmsClick}>Film</button>
+        <button className='grid-item' onClick={handleVideoGamesClick}>Video Games</button>
+        <button className='grid-item' onClick={handleGeographyClick}>Geography</button>
+        <button className='grid-item' onClick={handleHistoryClick}>History</button>
+      </div>
+      <button className="back-button" onClick={onBack}>{"< Back"}</button>
     </div>
   );
 };
