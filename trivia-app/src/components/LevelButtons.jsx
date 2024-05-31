@@ -19,6 +19,7 @@ const LevelButtons = ({onClick}) => {
 
   return (
     <div>
+      <h1>How confident are you today? Select your challenge</h1>
       <button onClick={handleEasyLevelClick}>Easy</button>
       <button onClick={handleMediumLevelClick}>Medium</button>
       <button onClick={handleHardLevelClick}>Hard</button>
