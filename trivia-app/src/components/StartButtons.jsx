@@ -21,7 +21,6 @@ const StartButtons = ({ onClick }) => {
         <div>
           <h2>Site Under Construction</h2>
           <p>We are currently working on the feature for two players.</p>
-          <img src="" alt="Under construction" />
         </div>
       )}
     </div>

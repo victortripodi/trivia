@@ -8,14 +8,11 @@ const QUESTIONS_AMOUNT = 10
 const shuffle = (array) => {
   let currentIndex = array.length;
 
-  // While there remain elements to shuffle...
   while (currentIndex != 0) {
 
-    // Pick a remaining element...
     let randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
-    // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex], array[currentIndex]];
   }
@@ -77,7 +74,7 @@ const Questions = ({ level, category, onRestart }) => {
         }
       })
       answersArray.push({
-        text: currentQuestion.correct_answer,
+        text: currentQuestion.correct_answer.replace(/&quot;/g, '\"').replace(/&#039;/g, '\''),
         isCorrect: true
       })
 
@@ -97,7 +94,6 @@ const Questions = ({ level, category, onRestart }) => {
         <div style={{ padding: '30px' }}>
           <h3>{currentQuestionFixed}</h3>
           <div className='grid-container'>
-
             {asnwers.map((option, index) => (
               <button disabled={answerSubmitted} onClick={() => handleAnswerClick(option.text)} key={option.text + "-" + index} style={option.isCorrect && answerSubmitted ? correctAnswerButtonStyle : {}}>{option.text}</button>
             ))}
@@ -113,7 +109,7 @@ const Questions = ({ level, category, onRestart }) => {
   const result = () => {
     if (answerSubmitted && questions.length > 0) {
       if (selectedAnswer === currentQuestion.correct_answer) {
-        return <p>"You did it"</p>;
+        return <p>Well done!</p>;
       } else {
         return <p>Wrong! ☹️ the correct answer is: {currentQuestion.correct_answer} </p>;
       }
