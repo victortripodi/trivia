@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Trivia App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+The Trivia App is an engaging and interactive quiz game built using React. It allows players to test their knowledge on various topics by answering multiple-choice questions fetched from the Open Trivia Database API. The app provides different levels of difficulty and a variety of categories to choose from.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Single Player Mode**: Currently supports only a single player mode where one user can play.
+- **Difficulty Levels**: Users can choose from three difficulty levels - Easy, Medium, and Hard.
+- **Categories**: A wide range of trivia categories to choose from, such as General Knowledge, Books, Films, Video Games, Geography, and History.
+- **Scoring**: Keeps track of the user's score and provides feedback after each question.
+- **Results**: Displays the final score and a message based on the user's performance.
+- **Restart**: Option to restart the quiz at any time.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Components
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### `App.js`
 
-### `npm test`
+This is the main component that manages the overall state of the app. It uses various states to track the number of players, selected difficulty level, and category. It renders different components based on the current state.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `StartButtons.js`
 
-### `npm run build`
+This component allows the user to select the number of players. Currently, only the one-player mode is implemented. It displays a message for the two-player mode indicating that the feature is under construction.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `LevelButtons.js`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This component lets the user select the difficulty level for the trivia questions. The options are Easy, Medium, and Hard.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `CategoriesButtons.js`
 
-### `npm run eject`
+This component allows the user to choose a category for the trivia questions. It provides buttons for various categories like General Knowledge, Books, Films, Video Games, Geography, and History.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `Questions.js`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This component handles fetching trivia questions from the Open Trivia Database API based on the selected difficulty level and category. It manages the state for current questions, user answers, score, and displays the questions and results. It also provides the option to move to the next question or restart the quiz.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## CSS
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The app uses custom CSS files for styling the components, ensuring a consistent and visually appealing user interface using an existing template
+Source: 
+General [Zell Liew](https://codepen.io/zellwk) on [CodePen](https://codepen.io/).
+Loading https://codepen.io/Chokcoco/pen/OJgdRPm
